@@ -6,15 +6,16 @@ import {CHAT_API} from '../AppConfig';
 
 // HANDLES INTERACTIONS WITH THE LLM (/backend)
 const ChatForm = ({setSearchResults})=>{
-    const inputRef = useRef(null);
+    const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const chat = (query)=>{
+    const chat = (q)=>{
         // AXIOS GET on the POKECHAT API POINT 
-        if (!query?.trim()) return;
+        if (!q?.trim()) return;
         setLoading(true);
-        axios.get(`${CHAT_API}/chat/query`, { params: { q: query } })
+        axios.get(`${CHAT_API}/chat/query`, { params: { q: q } })
             .then(res => {
+                console.log('Response:', res.data);
                 setSearchResults(res.data);
             })
             .catch(err => console.error(err))
@@ -22,7 +23,6 @@ const ChatForm = ({setSearchResults})=>{
     };
 
     const handleSend = () => {
-        const query = inputRef.current?.inputRef?.current?.value;
         chat(query);
     };
 
@@ -35,9 +35,10 @@ const ChatForm = ({setSearchResults})=>{
         <Input 
         fluid 
         loading={loading}
-        ref={inputRef}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
-        icon={<Icon name='send' inverted circular link />}
+        icon={<Icon name='send' inverted circular link onClick={handleSend} />}
         placeholder='Ask me a Pokemon Question...'
         />
         <Label pointing='above' message="strongest pokemon limit 1"
