@@ -15,7 +15,6 @@ const ChatForm = ({setSearchResults})=>{
         setLoading(true);
         axios.get(`${CHAT_API}/chat/query`, { params: { q: q } })
             .then(res => {
-                console.log('Response:', res.data);
                 setSearchResults(res.data);
             })
             .catch(err => console.error(err))

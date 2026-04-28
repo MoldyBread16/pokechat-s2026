@@ -18,7 +18,7 @@ const PokemonChat = () => {
           return <PokemonCard pokemonID={pokemonID} key={key}></PokemonCard>;
         })}
       </div>
-      <ChatForm setSearchResults={setPokemon}></ChatForm>
+      <ChatForm setSearchResults={(data) => setPokemon(data.map(p => p.id))}></ChatForm>
     </div>
   );
 };
